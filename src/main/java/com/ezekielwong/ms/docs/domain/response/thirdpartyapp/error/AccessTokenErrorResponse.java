@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class AccessTokenErrorResponse {
 
     private String error;
-
     private String errorDesc;
 }

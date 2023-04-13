@@ -12,6 +12,5 @@ import java.io.Serializable;
 public class FieldData implements Serializable {
 
     private String fieldId;
-
     private String value;
 }

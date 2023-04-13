@@ -12,11 +12,8 @@ import java.io.Serializable;
 public class RequesterInfo implements Serializable {
 
     private String id;
-
     private String name;
-
     private String email;
-
     private Manager manager;
 
     @Data
@@ -25,9 +22,7 @@ public class RequesterInfo implements Serializable {
     public static class Manager implements Serializable {
 
         private String id;
-
         private String name;
-
         private String email;
     }
 }

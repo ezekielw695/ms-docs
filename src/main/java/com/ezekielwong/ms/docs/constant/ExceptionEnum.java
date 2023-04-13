@@ -6,7 +6,7 @@ import java.util.Map;
 public enum ExceptionEnum {
 
     // 2xx Successful
-    MSDB_CASE_ID_NOT_FOUND("2001"),
+    DB_CASE_ID_NOT_FOUND("2001"),
     DB_TEMPLATE_NAME_MISMATCH("2002"),
 
     // 4xx Client Error

@@ -15,7 +15,6 @@ import java.util.List;
 public class ThirdPartyAppErrorResponse {
 
     private Error error;
-
     private List<ValidationError> validationErrorList;
 
     @Data
@@ -24,11 +23,8 @@ public class ThirdPartyAppErrorResponse {
     public static class Error {
 
         private Integer httpStatusCode;
-
         private Integer errorCode;
-
         private String errorMessage;
-
         private String referenceId;
     }
 
@@ -38,9 +34,7 @@ public class ThirdPartyAppErrorResponse {
     public static class ValidationError {
 
         private Integer errorCode;
-
         private String errorMessage;
-
         private String propertyName;
     }
 }

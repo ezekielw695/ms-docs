@@ -1,5 +1,6 @@
 package com.ezekielwong.ms.docs.domain.response.ms;
 
+import com.ezekielwong.ms.docs.error.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +18,7 @@ import lombok.NoArgsConstructor;
 public class StandardResponse<T> {
 
     private T data;
-
     private String message;
-
     private String status;
-
     private ErrorResponse errorResponse;
 }

@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 public class WorkflowResponse {
 
     private String name;
-
     private String startDate;
-
     private String status;
-
     private String info;
 }
