@@ -1,9 +1,11 @@
 package com.ezekielwong.ms.docs.constant;
 
+import com.ezekielwong.ms.docs.error.ErrorCode;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public enum ExceptionEnum {
+public enum ExceptionEnum implements ErrorCode {
 
     // 2xx Successful
     DB_CASE_ID_NOT_FOUND("2001"),
@@ -43,10 +45,12 @@ public enum ExceptionEnum {
         this.errorDescriptionMap.put("5999", ExceptionMessages.UNKNOWN_ERROR_MSG);
     }
 
+    @Override
     public String getCode() {
         return this.errorCode;
     }
 
+    @Override
     public String getDescription() {
         return this.errorDescriptionMap.get(this.errorCode);
     }
