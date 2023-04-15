@@ -5,6 +5,8 @@ import com.ezekielwong.ms.docs.error.ErrorCode;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ezekielwong.ms.docs.constant.ExceptionMessages.*;
+
 public enum ExceptionEnum implements ErrorCode {
 
     // 2xx Successful
@@ -30,19 +32,19 @@ public enum ExceptionEnum implements ErrorCode {
         this.errorCode = errorCode;
 
         // 2xx Successful
-        this.errorDescriptionMap.put("2001", ExceptionMessages.DB_CASE_ID_NOT_FOUND_MSG);
-        this.errorDescriptionMap.put("2002", ExceptionMessages.DB_TEMPLATE_NAME_MISMATCH_MSG);
+        this.errorDescriptionMap.put("2001", DB_CASE_ID_NOT_FOUND_MSG);
+        this.errorDescriptionMap.put("2002", DB_TEMPLATE_NAME_MISMATCH_MSG);
 
         // 4xx Client Error
-        this.errorDescriptionMap.put("4001", ExceptionMessages.REQUEST_VALIDATION_ERROR_MSG);
-        this.errorDescriptionMap.put("4002", ExceptionMessages.DATA_LAKE_MISSING_DOCUMENT_PROPERTY_MSG);
-        this.errorDescriptionMap.put("4003", ExceptionMessages.INVALID_JWT_EXCEPTION_MSG);
+        this.errorDescriptionMap.put("4001", REQUEST_VALIDATION_ERROR_MSG);
+        this.errorDescriptionMap.put("4002", DATA_LAKE_MISSING_DOCUMENT_PROPERTY_MSG);
+        this.errorDescriptionMap.put("4003", INVALID_JWT_EXCEPTION_MSG);
 
         // 5xx Server Error
-        this.errorDescriptionMap.put("5001", ExceptionMessages.DB_SQL_EXCEPTION_MSG);
-        this.errorDescriptionMap.put("5002", ExceptionMessages.THIRD_PARTY_APP_CALL_ERROR_MSG);
-        this.errorDescriptionMap.put("5003", ExceptionMessages.DATA_LAKE_CALL_ERROR_MSG);
-        this.errorDescriptionMap.put("5999", ExceptionMessages.UNKNOWN_ERROR_MSG);
+        this.errorDescriptionMap.put("5001", DB_SQL_EXCEPTION_MSG);
+        this.errorDescriptionMap.put("5002", THIRD_PARTY_APP_CALL_ERROR_MSG);
+        this.errorDescriptionMap.put("5003", DATA_LAKE_CALL_ERROR_MSG);
+        this.errorDescriptionMap.put("5999", UNKNOWN_ERROR_MSG);
     }
 
     @Override
