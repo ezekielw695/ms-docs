@@ -12,8 +12,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WorkflowResponse {
 
+    /**
+     * Name of the workflow
+     */
     private String name;
+
+    /**
+     * Date and time the workflow was started
+     */
     private String startDate;
+
+    /**
+     * Status of the workflow
+     */
     private String status;
+
+    /**
+     * Additional information associated with the workflow
+     */
     private String info;
 }

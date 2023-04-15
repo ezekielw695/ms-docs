@@ -14,7 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ThirdPartyAppErrorResponse {
 
+    /**
+     * Error response object
+     */
     private Error error;
+
+    /**
+     * List of validation errors
+     */
     private List<ValidationError> validationErrorList;
 
     @Data

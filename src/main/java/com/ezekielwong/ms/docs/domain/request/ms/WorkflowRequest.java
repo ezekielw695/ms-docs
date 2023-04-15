@@ -20,7 +20,7 @@ public class WorkflowRequest implements Serializable {
     private String name;
 
     /**
-     * Data used when starting the workflow, in XML format
+     * XML data used when starting the workflow
      */
     private String params;
 }

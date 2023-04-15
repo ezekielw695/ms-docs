@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class UploadDocumentRequest extends BaseApiRequest {
 
     /**
-     * Unique case identifier
+     * Unique client case identifier
      */
     @NotBlank
     private String caseId;
