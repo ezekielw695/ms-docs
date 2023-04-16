@@ -17,6 +17,9 @@
 		<java.version>17</java.version>
 		<hibernate-types.version>2.21.1</hibernate-types.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<java-jwt.version>4.4.0</java-jwt.version>
+		<okhttp3.version>4.10.0</okhttp3.version>
+		<bcprov-jdk18on.version>1.73</bcprov-jdk18on.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -67,6 +70,31 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${java-jwt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>mockwebserver</artifactId>
+			<version>${okhttp3.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
+			<version>${bcprov-jdk18on.version}</version>
 		</dependency>
 	</dependencies>
 

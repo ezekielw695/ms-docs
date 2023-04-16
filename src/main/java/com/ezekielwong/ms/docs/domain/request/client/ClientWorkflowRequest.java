@@ -23,7 +23,7 @@ import java.util.List;
 public class ClientWorkflowRequest extends BaseApiRequest {
 
     /**
-     * Unique client case identifier
+     * Unique client workflow request case identifier
      */
     @NotBlank
     @JsonProperty("CaseId")

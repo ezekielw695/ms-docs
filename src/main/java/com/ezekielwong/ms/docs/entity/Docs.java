@@ -28,7 +28,7 @@ import java.util.List;
 public class Docs extends BaseEntity {
 
     /**
-     * Unique client case identifier
+     * Unique client workflow request case identifier
      */
     @NotBlank
     @Column(name = "case_id", unique = true, updatable = false)

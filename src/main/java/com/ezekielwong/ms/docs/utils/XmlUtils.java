@@ -39,7 +39,7 @@ public class XmlUtils {
     private int index;
 
     /**
-     * Generate XML string from the Client workflow JSON object
+     * Generate XML string from the client workflow JSON object
      *
      * @param clientRequest {@link ClientWorkflowRequest}
      * @return XML string used when starting the workflow
@@ -50,7 +50,7 @@ public class XmlUtils {
     public String json2Xml(ClientWorkflowRequest clientRequest)
             throws ParserConfigurationException, IllegalAccessException, TransformerException {
 
-        log.debug("Converting Client workflow JSON object into XML string");
+        log.debug("Converting client workflow JSON object into XML string");
         String requestCaseId = clientRequest.getCaseId();
         List<FieldData> fieldDataList = clientRequest.getFieldDataList();
         RequesterInfo requestRequesterInfo = clientRequest.getRequesterInfo();
@@ -128,10 +128,10 @@ public class XmlUtils {
     }
 
     /**
-     * Append both client request case id and data lake document reference id to the document metadata
+     * Append both client workflow request case id and data lake document reference id to the document metadata
      *
      * @param metadata Document metadata in XML format
-     * @param caseId Client request case id
+     * @param caseId Client workflow request case id
      * @param docRefId Data lake document reference id
      * @return Document metadata in XML format with caseId and docRefId appended
      */

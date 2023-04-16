@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UploadDocumentResponse {
 
     /**
-     * Unique client case identifier
+     * Unique client workflow request case identifier
      */
     private String caseId;
 }
