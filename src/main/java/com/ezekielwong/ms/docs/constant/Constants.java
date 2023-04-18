@@ -7,9 +7,9 @@ public class Constants {
     public static final String THIRD_PARTY_APP_REQUEST_SENT_ERROR = "TPA_REQ_SENT_ERROR";
     public static final String THIRD_PARTY_APP_REQUEST_NOT_SENT = "TPA_REQ_NOT_SENT";
 
-    public static final String DATA_LAKE_UPLOADED = "DL_UPLOADED";
-    public static final String DATA_LAKE_UPLOADED_ERROR = "DL_UPLOADED_ERROR";
-    public static final String DATA_LAKE_NOT_UPLOADED = "DL_NOT_UPLOADED";
+    public static final String FILENET_UPLOADED = "DL_UPLOADED";
+    public static final String FILENET_UPLOADED_ERROR = "DL_UPLOADED_ERROR";
+    public static final String FILENET_NOT_UPLOADED = "DL_NOT_UPLOADED";
 
     public static final String KAFKA_MESSAGE_PUBLISHED = "KAFKA_MSG_PUBLISHED";
     public static final String KAFKA_MESSAGE_NOT_PUBLISHED = "KAFKA_MSG_NOT_PUBLISHED";

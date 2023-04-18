@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.datalake.response;
+package com.ezekielwong.ms.docs.filenet.response;
 
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlType(propOrder = {"guid", "version", "status"})
-public class DataLakeResponse implements Serializable {
+public class FilenetResponse implements Serializable {
 
     private String guid;
     private String version;

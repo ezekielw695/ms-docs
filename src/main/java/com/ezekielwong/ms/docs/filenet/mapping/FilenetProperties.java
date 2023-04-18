@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.datalake.mapping;
+package com.ezekielwong.ms.docs.filenet.mapping;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Date lake properties referenced in application.properties
+ * Filenet properties referenced in application.properties
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DateLakeProperties implements Serializable {
+public class FilenetProperties implements Serializable {
 
     @JsonProperty("DocumentTitle")
     private String documentTitle;

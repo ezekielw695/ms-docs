@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.datalake.request;
+package com.ezekielwong.ms.docs.filenet.request;
 
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlType(propOrder = {"documentclass", "objectstore", "docprops"})
-public class DataLakeRequest {
+public class FilenetRequest {
 
     private String documentclass;
     private String objectstore;

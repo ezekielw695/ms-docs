@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.datalake.mapping;
+package com.ezekielwong.ms.docs.filenet.mapping;
 
 import org.glassfish.jaxb.runtime.marshaller.NamespacePrefixMapper;
 import org.springframework.stereotype.Component;

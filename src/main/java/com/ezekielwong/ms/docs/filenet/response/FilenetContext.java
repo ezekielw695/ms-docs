@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.datalake.response;
+package com.ezekielwong.ms.docs.filenet.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.xml.bind.annotation.XmlType;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @XmlType(propOrder = {"messageid", "hostname", "timestamp", "userid"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DataLakeContext implements Serializable {
+public class FilenetContext implements Serializable {
 
     private String messageid;
     private String hostname;
