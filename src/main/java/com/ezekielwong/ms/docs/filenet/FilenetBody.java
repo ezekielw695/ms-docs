@@ -1,6 +1,7 @@
-package com.ezekielwong.ms.docs.filenet.response;
+package com.ezekielwong.ms.docs.filenet;
 
 import com.ezekielwong.ms.docs.filenet.request.FilenetRequest;
+import com.ezekielwong.ms.docs.filenet.response.FilenetResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.AllArgsConstructor;
@@ -18,5 +19,5 @@ public class FilenetBody implements Serializable {
 
     private FilenetContext filenetcontext;
     private FilenetRequest filenetrequest;
-    private FilenetResponse filenetreponse;
+    private FilenetResponse filenetresponse;
 }

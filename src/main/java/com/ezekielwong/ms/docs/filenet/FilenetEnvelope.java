@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.filenet.response;
+package com.ezekielwong.ms.docs.filenet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.xml.bind.annotation.*;
