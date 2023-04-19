@@ -37,11 +37,11 @@ import static com.ezekielwong.ms.docs.constant.ExceptionMessages.THIRD_PARTY_APP
 @RequiredArgsConstructor
 public class WebClientServiceImpl implements WebClientService {
 
+    private final WebClient webClient;
+
     private final JwtUtils jwtUtils;
 
     private final ClientServiceImpl clientServiceImpl;
-
-    private final WebClient webClient;
 
     /**
      * Third party app endpoint detail: JWT grant type
@@ -100,16 +100,7 @@ public class WebClientServiceImpl implements WebClientService {
                         return clientResponse.bodyToMono(WorkflowResponse.class);
                     }
                 })
-                .doOnError(throwable -> {
-                    log.error(THIRD_PARTY_APP_CALL_ERROR_MSG);
-
-                    // Update status to TPA_REQ_NOT_SENT
-                    clientServiceImpl.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_NOT_SENT);
-                    log.info(STATUS_UPDATED);
-
-                    String errMsg = THIRD_PARTY_APP_CALL_ERROR_MSG + ": [ " + throwable.getMessage() + " ]";
-                    throw new ThirdPartyAppCallErrorException(THIRD_PARTY_APP_CALL_ERROR, errMsg);
-                })
+                .doOnError(throwable -> handleCallError(caseId, throwable))
                 .block();
     }
 
@@ -149,16 +140,7 @@ public class WebClientServiceImpl implements WebClientService {
                         return clientResponse.bodyToMono(AccessTokenResponse.class);
                     }
                 })
-                .doOnError(throwable -> {
-                    log.error(THIRD_PARTY_APP_CALL_ERROR_MSG);
-
-                    // Update status to TPA_REQ_NOT_SENT
-                    clientServiceImpl.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_NOT_SENT);
-                    log.info(STATUS_UPDATED);
-
-                    String errMsg = THIRD_PARTY_APP_CALL_ERROR_MSG + ": [ " + throwable.getMessage() + " ]";
-                    throw new ThirdPartyAppCallErrorException(THIRD_PARTY_APP_CALL_ERROR, errMsg);
-                })
+                .doOnError(throwable -> handleCallError(caseId, throwable))
                 .block();
 
         // Response is null
@@ -191,5 +173,17 @@ public class WebClientServiceImpl implements WebClientService {
         log.debug("Getting new access token: \n{}", savedAccessToken);
 
         return savedAccessToken;
+    }
+
+    private void handleCallError(String caseId, Throwable throwable) {
+        log.error(THIRD_PARTY_APP_CALL_ERROR_MSG);
+
+        // Update status to TPA_REQ_NOT_SENT
+        clientServiceImpl.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_NOT_SENT);
+        log.info(STATUS_UPDATED);
+
+        Throwable cause = throwable.getCause();
+        String errMsg = THIRD_PARTY_APP_CALL_ERROR_MSG + ": [ " + (cause != null ? cause.getMessage() : throwable.getMessage()) + " ]";
+        throw new ThirdPartyAppCallErrorException(THIRD_PARTY_APP_CALL_ERROR, errMsg);
     }
 }
