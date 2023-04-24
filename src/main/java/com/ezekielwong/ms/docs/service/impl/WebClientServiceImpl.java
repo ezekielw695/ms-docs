@@ -52,7 +52,7 @@ public class WebClientServiceImpl implements WebClientService {
     /**
      * Third party app endpoint detail: URI to request access token
      */
-    @Value("${request.access-token.url}")
+    @Value("${request.access.token.url}")
     private String requestAccessTokenUrl;
 
     /**
@@ -79,7 +79,8 @@ public class WebClientServiceImpl implements WebClientService {
      * @throws InvalidKeySpecException Key specification is invalid
      */
     @Override
-    public Object sendWorkflow(String caseId, String name, String params) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+    public Object sendWorkflow(String caseId, String name, String params)
+            throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
 
         // Create workflow request
         log.debug("Sending workflow request to third party app");
@@ -175,6 +176,12 @@ public class WebClientServiceImpl implements WebClientService {
         return savedAccessToken;
     }
 
+    /**
+     * Handles error when calling third party app
+     *
+     * @param caseId Unique client workflow request case identifier
+     * @param throwable Error/exception thrown when attempting to call third party app
+     */
     private void handleCallError(String caseId, Throwable throwable) {
         log.error(THIRD_PARTY_APP_CALL_ERROR_MSG);
 
