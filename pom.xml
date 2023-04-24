@@ -15,6 +15,7 @@
 	<description>Document Microservice</description>
 	<properties>
 		<java.version>17</java.version>
+		<postgresql.version>42.6.0</postgresql.version>
 		<hibernate-types.version>2.21.1</hibernate-types.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<java-jwt.version>4.4.0</java-jwt.version>
@@ -41,11 +42,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -59,6 +55,17 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 		</dependency>
 
 		<dependency>
