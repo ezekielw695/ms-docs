@@ -5,6 +5,7 @@ import com.ezekielwong.ms.docs.domain.request.client.common.FieldData;
 import com.ezekielwong.ms.docs.domain.request.client.common.RequesterInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,7 +40,7 @@ public class ClientWorkflowRequest extends BaseApiRequest {
     /**
      * List of workflow data
      */
-    @NotBlank
+    @NotEmpty
     @JsonProperty("FieldDataList")
     private List<FieldData> fieldDataList;
 
