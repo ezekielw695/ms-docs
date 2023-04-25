@@ -7,7 +7,7 @@ CREATE TABLE public.tbl_docs (
     case_id varchar(255) NOT NULL,
     template_name varchar(255) NOT NULL,
     field_data_list json NOT NULL,
-    requestor_info json NOT NULL,
+    requester_info json NOT NULL,
     doc_ref_id varchar(255) NULL,
     metadata varchar NULL,
     status varchar(255) NULL,
