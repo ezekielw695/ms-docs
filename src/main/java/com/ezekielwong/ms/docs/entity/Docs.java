@@ -2,6 +2,7 @@ package com.ezekielwong.ms.docs.entity;
 
 import com.ezekielwong.ms.docs.domain.request.client.common.FieldData;
 import com.ezekielwong.ms.docs.domain.request.client.common.RequesterInfo;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -13,8 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.Type;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class Docs extends BaseEntity {
      * List of workflow data
      */
     @NotEmpty
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Type(JsonType.class)
     @Column(name = "field_data_list")
     private List<FieldData> fieldDataList;
 
@@ -53,7 +53,7 @@ public class Docs extends BaseEntity {
      * Requester details
      */
     @NotNull
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Type(JsonType.class)
     @Column(name = "requester_info")
     private RequesterInfo requesterInfo;
 
