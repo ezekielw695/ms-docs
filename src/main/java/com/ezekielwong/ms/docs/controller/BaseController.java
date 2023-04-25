@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.ezekielwong.ms.docs.constant.Constants.*;
 import static com.ezekielwong.ms.docs.constant.ExceptionEnum.UNKNOWN_ERROR;
@@ -26,10 +24,21 @@ public abstract class BaseController {
 
     protected void setBaseRequest(BaseApiRequest request, HttpServletRequest httpServletRequest) {
 
-        request.setCorrelationId((String) httpServletRequest.getAttribute(X_CORRELATION_ID));
-        request.setApiCountryCode((String) httpServletRequest.getAttribute(X_SOURCE_COUNTRY));
-        request.setDateTime((String) httpServletRequest.getAttribute(X_SOURCE_DATE_TIME));
-        request.setUpdatedChannel((String) httpServletRequest.getAttribute(X_SOURCE_ID));
+        Map<String, String> map = new HashMap<>();
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+
+        while (headerNames.hasMoreElements()) {
+            String key = headerNames.nextElement();
+            String value = httpServletRequest.getHeader(key);
+            map.put(key, value);
+        }
+
+        log.debug(map.toString());
+
+        request.setCorrelationId(map.get(X_CORRELATION_ID));
+        request.setApiCountryCode(map.get(X_SOURCE_COUNTRY));
+        request.setDateTime(map.get(X_SOURCE_DATE_TIME));
+        request.setUpdatedChannel(map.get(X_SOURCE_ID));
     }
 
     protected <T> StandardResponse<T> createSuccessResponse(T t, String message) {
