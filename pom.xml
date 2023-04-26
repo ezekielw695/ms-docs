@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<postgresql.version>42.6.0</postgresql.version>
 		<hibernate-types.version>2.21.1</hibernate-types.version>
+		<commons.codec.version>1.15</commons.codec.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<java-jwt.version>4.4.0</java-jwt.version>
 		<okhttp3.version>4.10.0</okhttp3.version>
@@ -72,6 +73,12 @@
 			<groupId>com.vladmihalcea</groupId>
 			<artifactId>hibernate-types-60</artifactId>
 			<version>${hibernate-types.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons.codec.version}</version>
 		</dependency>
 
 		<dependency>

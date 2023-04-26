@@ -3,7 +3,7 @@ package com.ezekielwong.ms.docs.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -119,7 +119,9 @@ public class JwtUtils {
         log.debug("Generating new JSON web token");
         KeyFactory kf = KeyFactory.getInstance("RSA");
 
+        log.info(publicKeyPath);
         String publicKey = Files.readString(Path.of(publicKeyPath));
+        log.info(publicKey);
         RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(new X509EncodedKeySpec(Base64.decodeBase64(publicKey)));
 
         String privateKey = Files.readString(Path.of(rsaPrivateKeyPath));
