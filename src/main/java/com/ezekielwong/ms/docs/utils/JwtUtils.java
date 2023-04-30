@@ -36,7 +36,7 @@ public class JwtUtils {
     /**
      * Integration key of the application
      */
-    @Value("${jwt.iss")
+    @Value("${jwt.iss}")
     private String iss;
 
     /**
@@ -119,9 +119,7 @@ public class JwtUtils {
         log.debug("Generating new JSON web token");
         KeyFactory kf = KeyFactory.getInstance("RSA");
 
-        log.info(publicKeyPath);
         String publicKey = Files.readString(Path.of(publicKeyPath));
-        log.info(publicKey);
         RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(new X509EncodedKeySpec(Base64.decodeBase64(publicKey)));
 
         String privateKey = Files.readString(Path.of(rsaPrivateKeyPath));

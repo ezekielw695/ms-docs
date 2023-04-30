@@ -1,13 +1,13 @@
 package com.ezekielwong.ms.docs.service.impl;
 
-import com.ezekielwong.ms.docs.domain.request.ms.WorkflowRequest;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.AccessTokenResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.WorkflowResponse;
+import com.ezekielwong.ms.docs.domain.request.ms.send.WorkflowRequest;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error.AccessTokenErrorResponse;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error.ThirdPartyAppErrorResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.send.WorkflowResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.token.AccessTokenResponse;
 import com.ezekielwong.ms.docs.exception.callerror.ThirdPartyAppCallErrorException;
-import com.ezekielwong.ms.docs.exception.common.GenericBadException;
 import com.ezekielwong.ms.docs.exception.ms.InvalidJwtException;
+import com.ezekielwong.ms.docs.exception.thirdpartyapp.ThirdPartyAppNullResponseException;
 import com.ezekielwong.ms.docs.service.WebClientService;
 import com.ezekielwong.ms.docs.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -127,7 +127,7 @@ public class WebClientServiceImpl implements WebClientService {
 
         // Generate new JSON web token
         String jwt = jwtUtils.generateWebToken(iat, now);
-        log.debug("JWT generated: \n{}", jwt);
+        log.debug("New JSON web token generated: \n{}", jwt);
 
         Object response = webClient
                 .post()
@@ -152,7 +152,7 @@ public class WebClientServiceImpl implements WebClientService {
             clientServiceImpl.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_SENT_ERROR);
             log.info(STATUS_UPDATED);
 
-            throw new GenericBadException(UNKNOWN_ERROR, "Third party app returned null access token");
+            throw new ThirdPartyAppNullResponseException(UNKNOWN_ERROR, "Third party app returned null access token");
 
         // Invalid JSON web token
         } else if (response.getClass() == AccessTokenErrorResponse.class) {
