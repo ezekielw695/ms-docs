@@ -19,7 +19,7 @@ public enum ExceptionEnum implements ErrorCode {
     INVALID_JWT_EXCEPTION("4003"),
 
     // 5xx Server Error
-    DB_SQL_EXCEPTION("5001"),
+    DB_PSQL_EXCEPTION("5001"),
     THIRD_PARTY_APP_CALL_ERROR("5002"),
     FILENET_CALL_ERROR("5003"),
     UNKNOWN_ERROR("5999");
@@ -41,7 +41,7 @@ public enum ExceptionEnum implements ErrorCode {
         this.errorDescriptionMap.put("4003", INVALID_JWT_EXCEPTION_MSG);
 
         // 5xx Server Error
-        this.errorDescriptionMap.put("5001", DB_SQL_EXCEPTION_MSG);
+        this.errorDescriptionMap.put("5001", DB_PSQL_EXCEPTION_MSG);
         this.errorDescriptionMap.put("5002", THIRD_PARTY_APP_CALL_ERROR_MSG);
         this.errorDescriptionMap.put("5003", FILENET_CALL_ERROR_MSG);
         this.errorDescriptionMap.put("5999", UNKNOWN_ERROR_MSG);

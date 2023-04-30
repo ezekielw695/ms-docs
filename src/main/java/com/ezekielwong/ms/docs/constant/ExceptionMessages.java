@@ -8,7 +8,7 @@ public class ExceptionMessages {
     public static final String REQUEST_VALIDATION_ERROR_MSG = "Request validation error, unable to parse request";
     public static final String FILENET_MISSING_DOCUMENT_PROPERTY_MSG = "Missing data lake document property in metadata";
     public static final String INVALID_JWT_EXCEPTION_MSG = "Error validating JSON web token";
-    public static final String DB_SQL_EXCEPTION_MSG = "DB encountered SQL exception while executing";
+    public static final String DB_PSQL_EXCEPTION_MSG = "DB encountered PSQL exception while executing";
 
     // Call errors
     public static final String THIRD_PARTY_APP_CALL_ERROR_MSG = "Unable to call third party app";
