@@ -1,7 +1,7 @@
-package com.ezekielwong.ms.docs.controller;
+package com.ezekielwong.ms.docs.controller.common;
 
 import com.ezekielwong.ms.docs.domain.request.BaseApiRequest;
-import com.ezekielwong.ms.docs.domain.response.StandardResponse;
+import com.ezekielwong.ms.docs.domain.response.ms.common.StandardResponse;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error.ThirdPartyAppErrorResponse;
 import com.ezekielwong.ms.docs.error.ErrorInfo;
 import com.ezekielwong.ms.docs.error.ErrorResponse;
@@ -121,5 +121,11 @@ public abstract class BaseController {
         }
 
         return exceptionMsgList;
+    }
+
+    protected String getThrowableCause(Exception exception) {
+
+        Throwable cause = exception.getCause();
+        return (cause != null ? cause.getMessage() : exception.getMessage());
     }
 }

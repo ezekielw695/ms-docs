@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.domain.response.thirdpartyapp;
+package com.ezekielwong.ms.docs.domain.response.thirdpartyapp.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

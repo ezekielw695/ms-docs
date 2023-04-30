@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.domain.response;
+package com.ezekielwong.ms.docs.domain.response.ms.common;
 
 import com.ezekielwong.ms.docs.error.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;

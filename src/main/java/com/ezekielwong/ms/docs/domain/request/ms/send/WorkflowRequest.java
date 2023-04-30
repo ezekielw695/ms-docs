@@ -1,4 +1,4 @@
-package com.ezekielwong.ms.docs.domain.request.ms;
+package com.ezekielwong.ms.docs.domain.request.ms.send;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,9 @@
 package com.ezekielwong.ms.docs.controller;
 
+import com.ezekielwong.ms.docs.controller.common.BaseController;
 import com.ezekielwong.ms.docs.domain.request.client.ClientWorkflowRequest;
-import com.ezekielwong.ms.docs.domain.response.StandardResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.WorkflowResponse;
+import com.ezekielwong.ms.docs.domain.response.ms.common.StandardResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.send.WorkflowResponse;
 import com.ezekielwong.ms.docs.service.impl.ClientServiceImpl;
 import com.ezekielwong.ms.docs.service.impl.WebClientServiceImpl;
 import com.ezekielwong.ms.docs.utils.DateTimeUtils;
