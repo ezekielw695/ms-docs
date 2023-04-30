@@ -41,7 +41,7 @@ public class ThirdPartyAppErrorResponse {
     public static class ValidationError {
 
         private Integer errorCode;
-        private String errorMessage;
         private String propertyName;
+        private String errorMessage;
     }
 }
