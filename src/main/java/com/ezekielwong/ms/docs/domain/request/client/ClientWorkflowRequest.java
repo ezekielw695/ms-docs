@@ -4,13 +4,11 @@ import com.ezekielwong.ms.docs.domain.request.BaseApiRequest;
 import com.ezekielwong.ms.docs.domain.request.client.common.FieldData;
 import com.ezekielwong.ms.docs.domain.request.client.common.RequesterInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -18,9 +16,10 @@ import java.util.List;
  * Client workflow API request
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class ClientWorkflowRequest extends BaseApiRequest {
 
     /**
@@ -40,6 +39,7 @@ public class ClientWorkflowRequest extends BaseApiRequest {
     /**
      * List of workflow data
      */
+    @Valid
     @NotEmpty
     @JsonProperty("FieldDataList")
     private List<FieldData> fieldDataList;
@@ -47,6 +47,7 @@ public class ClientWorkflowRequest extends BaseApiRequest {
     /**
      * Requester details
      */
+    @Valid
     @NotNull
     @JsonProperty("RequesterInfo")
     private RequesterInfo requesterInfo;

@@ -18,14 +18,14 @@ public abstract class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", unique = true, updatable = false)
+    @Column(name = "id", unique = true, updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "created_by", updatable = false)
+    @Column(name = "created_by", updatable = false, nullable = false)
     private String createdBy;
 
     @JsonFormat(shape =JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "created_date", updatable = false)
+    @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "updated_by")

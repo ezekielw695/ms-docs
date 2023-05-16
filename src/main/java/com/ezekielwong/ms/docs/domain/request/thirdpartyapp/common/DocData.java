@@ -1,8 +1,7 @@
-package com.ezekielwong.ms.docs.domain.request.client.common;
+package com.ezekielwong.ms.docs.domain.request.thirdpartyapp.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,13 +13,17 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FieldData implements Serializable {
+public class DocData implements Serializable {
 
     @NotBlank
-    @JsonProperty("FieldId")
-    private String fieldId;
+    @JsonProperty("Group")
+    private String group;
 
-    @NotNull
+    @NotBlank
+    @JsonProperty("Field")
+    private String field;
+
+    @NotBlank
     @JsonProperty("Value")
     private String value;
 }

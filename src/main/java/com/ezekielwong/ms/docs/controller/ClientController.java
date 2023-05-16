@@ -1,17 +1,16 @@
 package com.ezekielwong.ms.docs.controller;
 
-import com.ezekielwong.ms.docs.controller.common.BaseController;
 import com.ezekielwong.ms.docs.domain.request.client.ClientWorkflowRequest;
-import com.ezekielwong.ms.docs.domain.response.ms.common.StandardResponse;
+import com.ezekielwong.ms.docs.domain.response.ms.StandardResponse;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.send.WorkflowResponse;
-import com.ezekielwong.ms.docs.service.impl.ClientServiceImpl;
-import com.ezekielwong.ms.docs.service.impl.WebClientServiceImpl;
+import com.ezekielwong.ms.docs.service.ClientService;
+import com.ezekielwong.ms.docs.service.WebClientService;
 import com.ezekielwong.ms.docs.utils.DateTimeUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static com.ezekielwong.ms.docs.constant.Constants.*;
 
@@ -37,40 +37,44 @@ public class ClientController extends BaseController {
 
     private final HttpServletRequest httpServletRequest;
 
-    private final ClientServiceImpl clientServiceImpl;
+    private final ClientService clientService;
 
-    private final WebClientServiceImpl webClientServiceImpl;
+    private final WebClientService webclientService;
 
     private final DateTimeUtils dateTimeUtils;
 
     @PostMapping("/workflow/start")
-    public ResponseEntity<StandardResponse<Object>> startWorkflow (@RequestBody @Validated ClientWorkflowRequest clientRequest)
+    public ResponseEntity<StandardResponse<Object>> startWorkflow (@RequestBody @Valid ClientWorkflowRequest clientRequest)
         throws ParserConfigurationException, IllegalAccessException, TransformerException,
             NoSuchAlgorithmException, IOException, InvalidKeySpecException {
 
         LocalDateTime startTime = LocalDateTime.now();
         log.debug("### Start Workflow began at: {} ###", dateTimeUtils.getLocalDateTime(startTime));
-
-        String caseId = clientRequest.getCaseId();
+        
         setBaseRequest(clientRequest, httpServletRequest);
+        String caseId = clientRequest.getCaseId();
+        
+        // Extract the document properties required by filenet
+        Map<String, String> docPropsMap = clientService.extractDocProps(clientRequest.getFieldDataList());
+        log.info("Document properties extracted");
 
         // Generate XML string from client workflow request JSON object
-        String params = clientServiceImpl.generateXmlString(clientRequest);
+        String params = clientService.generateXmlString(clientRequest);
         log.info("Client workflow JSON object converted into XML string");
 
         // Save/update client workflow request
-        clientServiceImpl.saveOrUpdate(clientRequest);
+        clientService.saveOrUpdate(clientRequest, docPropsMap);
         log.info("Client request saved/updated");
 
         // Send client workflow request to third party app
-        Object response = webClientServiceImpl.sendWorkflow(caseId, clientRequest.getName(), params);
+        Object response = webclientService.sendWorkflow(caseId, clientRequest.getName(), params);
         log.info("Workflow response received from third party app");
 
         // Success response with workflow details
         if (response.getClass() == WorkflowResponse.class) {
 
             // Update status to TPA_REQ_SENT
-            clientServiceImpl.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_SENT);
+            clientService.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_SENT);
             log.info(STATUS_UPDATED);
 
             LocalDateTime endTime = LocalDateTime.now();
@@ -83,7 +87,7 @@ public class ClientController extends BaseController {
         } else {
 
             // Update status to TPA_REQ_SENT_ERROR
-            clientServiceImpl.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_SENT_ERROR);
+            clientService.updateStatus(caseId, THIRD_PARTY_APP_REQUEST_SENT_ERROR);
             log.info(STATUS_UPDATED);
 
             return ResponseEntity.ok(createFailureResponse(START_WORKFLOW_FAILURE, generateErrorDetails(response)));

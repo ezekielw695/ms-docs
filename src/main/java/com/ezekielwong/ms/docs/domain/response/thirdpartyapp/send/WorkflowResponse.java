@@ -1,6 +1,7 @@
 package com.ezekielwong.ms.docs.domain.response.thirdpartyapp.send;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
  * Third party app workflow API response
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkflowResponse {

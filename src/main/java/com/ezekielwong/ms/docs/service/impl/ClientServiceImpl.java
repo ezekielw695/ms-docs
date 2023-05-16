@@ -1,22 +1,30 @@
 package com.ezekielwong.ms.docs.service.impl;
 
 import com.ezekielwong.ms.docs.domain.request.client.ClientWorkflowRequest;
+import com.ezekielwong.ms.docs.domain.request.client.common.FieldData;
 import com.ezekielwong.ms.docs.entity.Docs;
 import com.ezekielwong.ms.docs.exception.common.GenericBadException;
+import com.ezekielwong.ms.docs.exception.common.GenericSuccessException;
 import com.ezekielwong.ms.docs.repository.DocsRepository;
 import com.ezekielwong.ms.docs.service.ClientService;
 import com.ezekielwong.ms.docs.utils.XmlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ezekielwong.ms.docs.constant.ExceptionEnum.DB_TEMPLATE_NAME_MISMATCH;
+import static com.ezekielwong.ms.docs.constant.ExceptionEnum.REQUEST_VALIDATION_ERROR;
 import static com.ezekielwong.ms.docs.constant.ExceptionMessages.DB_TEMPLATE_NAME_MISMATCH_MSG;
 
 /**
@@ -30,6 +38,43 @@ public class ClientServiceImpl implements ClientService {
     private final XmlUtils xmlUtils;
 
     private final DocsRepository docsRepository;
+
+    private final Map<String, String> mapping;
+
+    @Value("#{'${filenet.doc-prop.prop-name-list}'.split(',')}")
+    private List<String> propNameList;
+
+    @Override
+    public Map<String, String> extractDocProps(List<FieldData> fieldDataList) {
+
+        log.debug("Extracting document properties");
+        Map<String, String> fieldDataMap;
+
+        try {
+            fieldDataMap = fieldDataList.stream()
+                    .collect(Collectors.toMap(FieldData::getFieldId, FieldData::getValue));
+
+        } catch (IllegalStateException e) {
+
+            String errMsg = e.getMessage();
+            log.error(errMsg);
+
+            throw new GenericBadException(REQUEST_VALIDATION_ERROR, errMsg);
+        }
+
+        Map<String, String> docPropsMap = new LinkedHashMap<>(2);
+
+        for (String propName : propNameList) {
+
+            String mappingValue = mapping.get(propName);
+            String propValue = fieldDataMap.get(mappingValue);
+
+            log.debug("PropName: [ {} ] -> PropValue: [ {} ]", propName, propValue);
+            docPropsMap.put(propName, propValue);
+        }
+
+        return docPropsMap;
+    }
 
     /**
      * Generate XML string from client workflow request JSON object
@@ -54,7 +99,7 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Docs saveOrUpdate(ClientWorkflowRequest clientRequest) {
+    public Docs saveOrUpdate(ClientWorkflowRequest clientRequest, Map<String, String> docPropsMap) {
 
         log.debug("Saving/updating client request");
         Optional<Docs> docsDB = Optional.ofNullable(docsRepository.findByCaseId(clientRequest.getCaseId()));
@@ -77,11 +122,12 @@ public class ClientServiceImpl implements ClientService {
 
             // Check for template name mismatch
             if (!StringUtils.equals(clientRequest.getName(), docs.getTemplateName())) {
+
                 log.error(DB_TEMPLATE_NAME_MISMATCH_MSG);
                 String errMsg = DB_TEMPLATE_NAME_MISMATCH_MSG + String.format(": [ Request: \"%s\", DB: \"%s\" ]",
                         clientRequest.getName(), docs.getTemplateName());
 
-                throw new GenericBadException(DB_TEMPLATE_NAME_MISMATCH, errMsg);
+                throw new GenericSuccessException(DB_TEMPLATE_NAME_MISMATCH, errMsg);
             }
 
             docs.setUpdatedBy(clientRequest.getUpdatedChannel());
@@ -90,6 +136,7 @@ public class ClientServiceImpl implements ClientService {
         // Remaining data
         docs.setFieldDataList(clientRequest.getFieldDataList());
         docs.setRequesterInfo(clientRequest.getRequesterInfo());
+        docs.setDocPropsMap(docPropsMap);
 
         return docsRepository.saveAndFlush(docs);
     }

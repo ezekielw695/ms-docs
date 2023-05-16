@@ -1,6 +1,7 @@
 package com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * Third party app error API response
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ThirdPartyAppErrorResponse {
@@ -25,6 +27,7 @@ public class ThirdPartyAppErrorResponse {
     private List<ValidationError> validationErrorList;
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Error {
@@ -36,6 +39,7 @@ public class ThirdPartyAppErrorResponse {
     }
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ValidationError {

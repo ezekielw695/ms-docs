@@ -1,11 +1,9 @@
-package com.ezekielwong.ms.docs.domain.response.ms;
+package com.ezekielwong.ms.docs.domain.response.ms.upload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class UploadDocumentResponse {
 

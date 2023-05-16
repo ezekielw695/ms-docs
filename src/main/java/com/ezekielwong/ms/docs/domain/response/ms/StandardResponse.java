@@ -1,8 +1,9 @@
-package com.ezekielwong.ms.docs.domain.response.ms.common;
+package com.ezekielwong.ms.docs.domain.response.ms;
 
 import com.ezekielwong.ms.docs.error.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
  * @param <T> Response data
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)

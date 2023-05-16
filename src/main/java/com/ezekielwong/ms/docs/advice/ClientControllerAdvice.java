@@ -1,8 +1,8 @@
 package com.ezekielwong.ms.docs.advice;
 
 import com.ezekielwong.ms.docs.controller.ClientController;
-import com.ezekielwong.ms.docs.controller.common.BaseController;
-import com.ezekielwong.ms.docs.domain.response.ms.common.StandardResponse;
+import com.ezekielwong.ms.docs.controller.BaseController;
+import com.ezekielwong.ms.docs.domain.response.ms.StandardResponse;
 import com.ezekielwong.ms.docs.error.ErrorResponse;
 import com.ezekielwong.ms.docs.exception.callerror.ThirdPartyAppCallErrorException;
 import com.ezekielwong.ms.docs.exception.common.BaseException;

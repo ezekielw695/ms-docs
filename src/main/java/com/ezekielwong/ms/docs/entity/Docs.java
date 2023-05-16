@@ -6,22 +6,22 @@ import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import java.util.List;
+import java.util.Map;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper = false)
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "tbl_docs")
@@ -30,32 +30,35 @@ public class Docs extends BaseEntity {
     /**
      * Unique client workflow request case identifier
      */
-    @NotBlank
-    @Column(name = "case_id", unique = true, updatable = false)
+    @Column(name = "case_id", unique = true, updatable = false, nullable = false)
     private String caseId;
 
     /**
      * Name of the workflow
      */
-    @NotBlank
-    @Column(name = "template_name", updatable = false)
+    @Column(name = "template_name", updatable = false, nullable = false)
     private String templateName;
 
     /**
      * List of workflow data
      */
-    @NotEmpty
     @Type(JsonType.class)
-    @Column(name = "field_data_list")
+    @Column(name = "field_data_list", nullable = false)
     private List<FieldData> fieldDataList;
 
     /**
      * Requester details
      */
-    @NotNull
     @Type(JsonType.class)
-    @Column(name = "requester_info")
+    @Column(name = "requester_info", nullable = false)
     private RequesterInfo requesterInfo;
+
+    /**
+     * Document properties required by filenet
+     */
+    @Type(JsonType.class)
+    @Column(name = "doc_props", nullable = false)
+    private Map<String, String> docPropsMap;
 
     /**
      * GUID of the document stored in the data lake
@@ -64,14 +67,27 @@ public class Docs extends BaseEntity {
     private String docRefId;
 
     /**
-     * Document metadata in XML format
+     * Document metadata in JSON format
      */
+    @Type(JsonType.class)
     @Column(name = "metadata")
-    private String metadata;
+    private Map<String, Map<String, String>> metadata;
+
+    /**
+     * Third party app document id
+     */
+    @Column(name = "third_party_app_doc_id", unique = true)
+    private String thirdPartyAppDocId;
 
     /**
      * Current status of the request
      */
     @Column(name = "status")
     private String status;
+
+    /**
+     * Flag to check if document has been purged from the third party app
+     */
+    @Column(name = "is_purged", length = 1, nullable = false)
+    private String isPurged = "N";
 }
