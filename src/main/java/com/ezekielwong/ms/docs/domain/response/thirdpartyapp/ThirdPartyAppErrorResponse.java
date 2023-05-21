@@ -1,6 +1,5 @@
 package com.ezekielwong.ms.docs.domain.response.thirdpartyapp;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,13 +19,11 @@ public class ThirdPartyAppErrorResponse {
     /**
      * Error response object
      */
-    @JsonProperty("Error")
     private Error error;
 
     /**
      * List of validation errors
      */
-    @JsonProperty("ValidationErrors")
     private List<ValidationError> validationErrorList;
 
     @Data
