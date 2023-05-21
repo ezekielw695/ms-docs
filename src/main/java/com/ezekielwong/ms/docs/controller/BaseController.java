@@ -1,8 +1,8 @@
-package com.ezekielwong.ms.docs.controller.common;
+package com.ezekielwong.ms.docs.controller;
 
 import com.ezekielwong.ms.docs.domain.request.BaseApiRequest;
-import com.ezekielwong.ms.docs.domain.response.ms.common.StandardResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error.ThirdPartyAppErrorResponse;
+import com.ezekielwong.ms.docs.domain.response.ms.StandardResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.ThirdPartyAppErrorResponse;
 import com.ezekielwong.ms.docs.error.ErrorInfo;
 import com.ezekielwong.ms.docs.error.ErrorResponse;
 import com.ezekielwong.ms.docs.error.ProviderError;
@@ -15,8 +15,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.*;
 
-import static com.ezekielwong.ms.docs.constant.Constants.*;
+import static com.ezekielwong.ms.docs.constant.AppConstants.*;
+import static com.ezekielwong.ms.docs.constant.ExceptionEnum.REQUEST_VALIDATION_ERROR;
 import static com.ezekielwong.ms.docs.constant.ExceptionEnum.UNKNOWN_ERROR;
+import static com.ezekielwong.ms.docs.constant.ExceptionMessages.REQUEST_VALIDATION_ERROR_MSG;
 import static com.ezekielwong.ms.docs.constant.RequestHeaders.*;
 
 @Slf4j
@@ -43,22 +45,20 @@ public abstract class BaseController {
 
     protected <T> StandardResponse<T> createSuccessResponse(T t, String message) {
 
-        StandardResponse<T> response = new StandardResponse<>();
-        response.setData(t);
-        response.setMessage(message);
-        response.setStatus(SUCCESS);
-
-        return response;
+        return StandardResponse.<T>builder()
+                .data(t)
+                .message(message)
+                .status(SUCCESS)
+                .build();
     }
 
     protected <T> StandardResponse<T> createFailureResponse(String message, ErrorResponse errorResponse) {
 
-        StandardResponse<T> response = new StandardResponse<>();
-        response.setMessage(message);
-        response.setStatus(FAILURE);
-        response.setErrorResponse(errorResponse);
-
-        return response;
+        return StandardResponse.<T>builder()
+                .message(message)
+                .status(FAILURE)
+                .errorResponse(errorResponse)
+                .build();
     }
 
     protected ErrorResponse generateErrorDetails(Object response) {
@@ -68,6 +68,7 @@ public abstract class BaseController {
 
         // Filenet error response
         if (response.getClass() == FilenetResponse.class) {
+
             log.error("Filenet error");
             FilenetResponse errorResponse = (FilenetResponse) response;
             errorDetail.setErrorCode(errorResponse.getStatus().getCode());
@@ -77,6 +78,7 @@ public abstract class BaseController {
 
         // Third party app error response
         } else if (response.getClass() == ThirdPartyAppErrorResponse.class) {
+
             log.error("Third party app error");
             ThirdPartyAppErrorResponse errorResponse = (ThirdPartyAppErrorResponse) response;
             errorDetail.setErrorCode(errorResponse.getError().getErrorCode().toString());
@@ -84,9 +86,11 @@ public abstract class BaseController {
 
             // Check for additional validation error
             if (errorResponse.getValidationErrorList() != null) {
+
                 List<ProviderError> providerErrorList = new ArrayList<>();
 
                 for (ThirdPartyAppErrorResponse.ValidationError error : errorResponse.getValidationErrorList()) {
+
                     log.error("Validation error: " + error.toString());
                     ProviderError providerError = new ProviderError();
                     providerError.setProviderErrorCode(error.getErrorCode().toString());
@@ -107,25 +111,39 @@ public abstract class BaseController {
         }
     }
 
-    protected List<String> getExceptionMsgList(MethodArgumentNotValidException exception) {
+    protected ErrorResponse getBadRequestErrorResponse(Exception exception) {
 
-        log.error("Request validation error");
-        List<String> exceptionMsgList = new ArrayList<>();
+        String errMsg = REQUEST_VALIDATION_ERROR_MSG;
 
-        // Request field errors
-        for (FieldError error : exception.getBindingResult().getFieldErrors()) {
-            String errMsg = error.getField() + ": " + error.getDefaultMessage();
-            log.error(errMsg);
+        if (exception.getClass() == MethodArgumentNotValidException.class) {
 
-            exceptionMsgList.add(errMsg);
+            log.error("Request validation error");
+            MethodArgumentNotValidException e = (MethodArgumentNotValidException) exception;
+            List<String> exceptionMsgList = new ArrayList<>();
+
+            for (FieldError error : e.getBindingResult().getFieldErrors()) {
+
+                String err = error.getField() + ": " + error.getDefaultMessage();
+                log.error(err);
+
+                exceptionMsgList.add(err);
+            }
+
+            errMsg += String.format(": %s", exceptionMsgList);
+
+         } else {
+            errMsg += String.format(": [ %s ]", getThrowableCause(exception));
         }
 
-        return exceptionMsgList;
+        return new ErrorResponse(new GenericBadException(REQUEST_VALIDATION_ERROR, errMsg));
     }
 
     protected String getThrowableCause(Exception exception) {
 
         Throwable cause = exception.getCause();
-        return (cause != null ? cause.getMessage() : exception.getMessage());
+        String errMsg = (cause != null ? cause.getMessage() : exception.getMessage());
+        log.error(errMsg);
+
+        return errMsg;
     }
 }

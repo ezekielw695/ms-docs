@@ -76,7 +76,7 @@ public class JwtUtils {
     private String rsaPrivateKeyPath;
 
     /**
-     * Instant when the JWT assertion will expire, un Unix epoch format
+     * Instant when the JWT assertion will expire, in Unix epoch format
      */
     private Instant exp;
 
@@ -91,25 +91,28 @@ public class JwtUtils {
     public Boolean accessTokenIsNotExpired(Instant now, String savedAccessToken) {
 
         if (savedAccessToken == null) {
+
             log.debug("No access token available");
             return false;
 
         } else if (exp != null && now.isBefore(exp)) {
+
             log.debug("Unexpired access token available");
             return true;
 
         } else {
+
             log.debug("Access token expired");
             return false;
         }
     }
 
     /**
-     * Generate JSON web token for API calls to the third party app
+     * Generate a JSON web token for API calls to the third party app
      *
      * @param iat Current long epoch-seconds
      * @param now Instant when JWT was issued, in Unix epoch format
-     * @return JSON web token
+     * @return The JSON web token
      * @throws NoSuchAlgorithmException Requested cryptographic algorithm is not available
      * @throws IOException I/O operation interrupted or failed
      * @throws InvalidKeySpecException Key specification is invalid

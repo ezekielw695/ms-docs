@@ -1,13 +1,13 @@
 package com.ezekielwong.ms.docs.service.impl;
 
-import com.ezekielwong.ms.docs.domain.request.ms.send.WorkflowRequest;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error.AccessTokenErrorResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.error.ThirdPartyAppErrorResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.send.WorkflowResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.token.AccessTokenResponse;
-import com.ezekielwong.ms.docs.exception.callerror.ThirdPartyAppCallErrorException;
-import com.ezekielwong.ms.docs.exception.ms.InvalidJwtException;
-import com.ezekielwong.ms.docs.exception.thirdpartyapp.ThirdPartyAppNullResponseException;
+import com.ezekielwong.ms.docs.domain.request.ms.WorkflowRequest;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.AccessTokenErrorResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.ThirdPartyAppErrorResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.WorkflowResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.AccessTokenResponse;
+import com.ezekielwong.ms.docs.exception.ThirdPartyAppCallErrorException;
+import com.ezekielwong.ms.docs.exception.common.InvalidJwtException;
+import com.ezekielwong.ms.docs.exception.ThirdPartyAppNullResponseException;
 import com.ezekielwong.ms.docs.service.WebClientService;
 import com.ezekielwong.ms.docs.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.Instant;
 
-import static com.ezekielwong.ms.docs.constant.Constants.*;
+import static com.ezekielwong.ms.docs.constant.AppConstants.*;
 import static com.ezekielwong.ms.docs.constant.ExceptionEnum.*;
 import static com.ezekielwong.ms.docs.constant.ExceptionMessages.INVALID_JWT_EXCEPTION_MSG;
 import static com.ezekielwong.ms.docs.constant.ExceptionMessages.THIRD_PARTY_APP_CALL_ERROR_MSG;
@@ -82,9 +82,11 @@ public class WebClientServiceImpl implements WebClientService {
     public Object sendWorkflow(String caseId, String name, String params)
             throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
 
-        // Create workflow request
         log.debug("Sending workflow request to third party app");
-        WorkflowRequest workflowRequest = new WorkflowRequest(name, params);
+        WorkflowRequest workflowRequest = WorkflowRequest.builder()
+                .name(name)
+                .params(params)
+                .build();
 
         String auth = getAccessToken(caseId);
 
@@ -121,6 +123,7 @@ public class WebClientServiceImpl implements WebClientService {
 
         // Check for unexpired access token
         if (jwtUtils.accessTokenIsNotExpired(now, savedAccessToken).equals(Boolean.TRUE)) {
+
             log.debug("Getting unexpired access token: \n{}", savedAccessToken);
             return savedAccessToken;
         }
@@ -146,6 +149,7 @@ public class WebClientServiceImpl implements WebClientService {
 
         // Response is null
         if (response == null) {
+
             log.error(NULL_RESPONSE);
 
             // Update status to TPA_REQ_SENT_ERROR
@@ -156,6 +160,7 @@ public class WebClientServiceImpl implements WebClientService {
 
         // Invalid JSON web token
         } else if (response.getClass() == AccessTokenErrorResponse.class) {
+
             log.error(INVALID_JWT_EXCEPTION_MSG);
 
             // Update status to TPA_REQ_SENT_ERROR
@@ -165,6 +170,7 @@ public class WebClientServiceImpl implements WebClientService {
             AccessTokenErrorResponse tokenError = (AccessTokenErrorResponse) response;
             String errMsg = INVALID_JWT_EXCEPTION_MSG + String.format(": [ error: \"%s\", error_desc: \"%s\" ]",
                     tokenError.getError(), tokenError.getErrorDesc());
+
             throw new InvalidJwtException(INVALID_JWT_EXCEPTION, errMsg);
         }
 
@@ -177,12 +183,13 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     /**
-     * Handles error when calling third party app
+     * Handle third party app call error
      *
      * @param caseId Unique client workflow request case identifier
-     * @param throwable Error/exception thrown when attempting to call third party app
+     * @param throwable Error/Exception thrown calling the third party app
      */
     private void handleCallError(String caseId, Throwable throwable) {
+
         log.error(THIRD_PARTY_APP_CALL_ERROR_MSG);
 
         // Update status to TPA_REQ_NOT_SENT
@@ -191,6 +198,7 @@ public class WebClientServiceImpl implements WebClientService {
 
         Throwable cause = throwable.getCause();
         String errMsg = THIRD_PARTY_APP_CALL_ERROR_MSG + ": [ " + (cause != null ? cause.getMessage() : throwable.getMessage()) + " ]";
+
         throw new ThirdPartyAppCallErrorException(THIRD_PARTY_APP_CALL_ERROR, errMsg);
     }
 }

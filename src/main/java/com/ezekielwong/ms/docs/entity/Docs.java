@@ -61,7 +61,7 @@ public class Docs extends BaseEntity {
     private Map<String, String> docPropsMap;
 
     /**
-     * GUID of the document stored in the data lake
+     * GUID of the document stored in filenet
      */
     @Column(name = "doc_ref_id", unique = true)
     private String docRefId;

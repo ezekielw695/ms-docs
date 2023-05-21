@@ -47,7 +47,6 @@ public class ClientWorkflowRequest extends BaseApiRequest {
     /**
      * Requester details
      */
-    @Valid
     @NotNull
     @JsonProperty("RequesterInfo")
     private RequesterInfo requesterInfo;

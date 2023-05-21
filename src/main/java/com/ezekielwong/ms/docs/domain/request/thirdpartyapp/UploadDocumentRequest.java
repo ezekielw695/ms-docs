@@ -8,17 +8,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Third party app upload document API request
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class UploadDocumentRequest extends BaseApiRequest {
 
     @Valid
     @NotNull
-    @JsonProperty("Documents")
+    @JsonProperty("Document")
     private Document document;
 }

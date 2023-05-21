@@ -33,12 +33,6 @@ import java.util.List;
 public class XmlUtils {
 
     /**
-     * Index location of third party app metadata where both caseId and docRefId are to be inserted
-     */
-    @Value("${xml.metadata.insertion.index}")
-    private int index;
-
-    /**
      * Generate XML string from the client workflow JSON object
      *
      * @param clientRequest {@link ClientWorkflowRequest}
@@ -77,6 +71,7 @@ public class XmlUtils {
 
             // Ignore empty field values
             if (StringUtils.isNotBlank(fieldData.getValue())) {
+
                 log.debug(fieldData.getFieldId() + " : " + fieldData.getValue());
 
                 Element e = document.createElement(fieldData.getFieldId());
@@ -94,6 +89,7 @@ public class XmlUtils {
 
             // Field is a complex object
             if (StringUtils.equalsAnyIgnoreCase(field.getName(), "Manager")) {
+
                 Element manager = document.createElement("Manager");
                 requesterInfo.appendChild(manager);
                 RequesterInfo.Manager requestManager = requestRequesterInfo.getManager();
@@ -128,29 +124,6 @@ public class XmlUtils {
     }
 
     /**
-     * Append both client workflow request case id and data lake document reference id to the document metadata
-     *
-     * @param metadata Document metadata in XML format
-     * @param caseId Client workflow request case id
-     * @param docRefId Data lake document reference id
-     * @return Document metadata in XML format with caseId and docRefId appended
-     */
-    public String appendMetadata(String metadata, String caseId, String docRefId) {
-
-        log.debug("Appending metadata");
-
-        String appendedMetadata
-                = metadata.substring(0, index)
-                + "<CaseId>" + caseId + "</CaseId>"
-                + "<DocRefId>" + docRefId + "</DocRefId>"
-                + metadata.substring(index);
-
-        log.debug(appendedMetadata);
-
-        return appendedMetadata;
-    }
-
-    /**
      * Map object field name and value
      *
      * @param document XML document
@@ -166,6 +139,7 @@ public class XmlUtils {
 
         // Ignore empty field values
         if (StringUtils.isNotBlank((String) field.get(object))) {
+
             Element e = document.createElement(StringUtils.capitalize(field.getName()));
             e.appendChild(document.createTextNode((String) field.get(object)));
             element.appendChild(e);

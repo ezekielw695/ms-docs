@@ -1,10 +1,10 @@
-package com.ezekielwong.ms.docs.exception.callerror;
+package com.ezekielwong.ms.docs.exception;
 
 import com.ezekielwong.ms.docs.error.ErrorCode;
-import com.ezekielwong.ms.docs.exception.common.BaseException;
+import com.ezekielwong.ms.docs.exception.common.GenericException;
 import lombok.NonNull;
 
-public class ThirdPartyAppCallErrorException extends BaseException {
+public class ThirdPartyAppCallErrorException extends GenericException {
 
     public ThirdPartyAppCallErrorException(@NonNull ErrorCode errorCode, String message) {
         super(errorCode, message);

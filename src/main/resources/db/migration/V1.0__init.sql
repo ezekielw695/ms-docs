@@ -8,12 +8,16 @@ CREATE TABLE public.tbl_docs (
     template_name varchar(255) NOT NULL,
     field_data_list json NOT NULL,
     requester_info json NOT NULL,
+    doc_props json NOT NULL,
     doc_ref_id varchar(255) NULL,
-    metadata varchar NULL,
+    metadata json NULL,
+    third_party_app_doc_id varchar(255) NULL,
     status varchar(255) NULL,
+    is_purged varchar(1) NOT NULL,
     CONSTRAINT tbl_docs_pk PRIMARY KEY (id),
-    CONSTRAINT tbl_docs_un UNIQUE (case_id),
-    CONSTRAINT tbl_docs_un2 UNIQUE (doc_ref_id)
+    CONSTRAINT tbl_docs_un1 UNIQUE (case_id),
+    CONSTRAINT tbl_docs_un2 UNIQUE (doc_ref_id),
+    CONSTRAINT tbl_docs_un3 UNIQUE (third_party_app_doc_id)
 );
 
 CREATE TABLE public.shedlock (

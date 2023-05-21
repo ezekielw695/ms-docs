@@ -12,4 +12,6 @@ public interface DocsRepository extends JpaRepository<Docs, String> {
     Docs findByCaseId(String caseId);
 
     List<Docs> findByStatusEquals(String status);
+
+    List<Docs> findByStatusAndIsPurgedEquals(String status, String isPurged);
 }

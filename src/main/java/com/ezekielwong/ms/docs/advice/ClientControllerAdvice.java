@@ -1,14 +1,12 @@
 package com.ezekielwong.ms.docs.advice;
 
-import com.ezekielwong.ms.docs.controller.ClientController;
 import com.ezekielwong.ms.docs.controller.BaseController;
+import com.ezekielwong.ms.docs.controller.ClientController;
 import com.ezekielwong.ms.docs.domain.response.ms.StandardResponse;
 import com.ezekielwong.ms.docs.error.ErrorResponse;
-import com.ezekielwong.ms.docs.exception.callerror.ThirdPartyAppCallErrorException;
-import com.ezekielwong.ms.docs.exception.common.BaseException;
-import com.ezekielwong.ms.docs.exception.common.GenericBadException;
-import com.ezekielwong.ms.docs.exception.ms.InvalidJwtException;
-import com.ezekielwong.ms.docs.exception.thirdpartyapp.ThirdPartyAppNullResponseException;
+import com.ezekielwong.ms.docs.exception.ThirdPartyAppCallErrorException;
+import com.ezekielwong.ms.docs.exception.ThirdPartyAppNullResponseException;
+import com.ezekielwong.ms.docs.exception.common.*;
 import org.postgresql.util.PSQLException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -23,12 +21,11 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
-import static com.ezekielwong.ms.docs.constant.Constants.START_WORKFLOW_FAILURE;
-import static com.ezekielwong.ms.docs.constant.ExceptionEnum.*;
-import static com.ezekielwong.ms.docs.constant.ExceptionMessages.DB_PSQL_EXCEPTION_MSG;
-import static com.ezekielwong.ms.docs.constant.ExceptionMessages.REQUEST_VALIDATION_ERROR_MSG;
+import static com.ezekielwong.ms.docs.constant.AppConstants.START_WORKFLOW_FAILURE;
+import static com.ezekielwong.ms.docs.constant.ExceptionEnum.MSDB_PSQL_EXCEPTION;
+import static com.ezekielwong.ms.docs.constant.ExceptionEnum.UNKNOWN_ERROR;
+import static com.ezekielwong.ms.docs.constant.ExceptionMessages.MSDB_PSQL_EXCEPTION_MSG;
 
 /**
  * Exception handler for exceptions thrown by ClientController
@@ -38,31 +35,30 @@ import static com.ezekielwong.ms.docs.constant.ExceptionMessages.REQUEST_VALIDAT
 public class ClientControllerAdvice extends BaseController {
 
     /**
-     * Client payload content not valid after business rule checking
+     * Client payload content is not valid after business rule checking
      *
-     * @param exception {@link GenericBadException}
+     * @param exception {@link GenericSuccessException}
      * @return {@link StandardResponse} with failure details
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(GenericBadException.class)
-    public StandardResponse<Object> handleGenericBadException(GenericBadException exception) {
+    @ExceptionHandler(GenericSuccessException.class)
+    public StandardResponse<Object> handleGenericSuccessException(GenericSuccessException exception) {
         return createFailureResponse(START_WORKFLOW_FAILURE, new ErrorResponse(exception));
     }
 
     /**
-     * Client request validation error
+     * Client request fails to fulfill the required payload attributes
      *
-     * @param exception {@link MethodArgumentNotValidException}
+     * @param exception {@link MethodArgumentNotValidException}, {@link GenericBadException}
      * @return {@link StandardResponse} with failure details
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public StandardResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        List<String> exceptionMsgList = getExceptionMsgList(exception);
-        String errMsg = REQUEST_VALIDATION_ERROR_MSG + String.format(": %s", exceptionMsgList.toString());
-        ErrorResponse errorResponse = new ErrorResponse(new GenericBadException(REQUEST_VALIDATION_ERROR, errMsg));
-
-        return createFailureResponse(START_WORKFLOW_FAILURE, errorResponse);
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
+            GenericBadException.class
+    })
+    public StandardResponse<Object> handleBadRequestException(Exception exception) {
+        return createFailureResponse(START_WORKFLOW_FAILURE, getBadRequestErrorResponse(exception));
     }
 
     /**
@@ -71,7 +67,7 @@ public class ClientControllerAdvice extends BaseController {
      * @param exception {@link InvalidJwtException}
      * @return {@link StandardResponse} with failure details
      */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidJwtException.class)
     public StandardResponse<Object> handleInvalidJwtException(InvalidJwtException exception) {
         return createFailureResponse(START_WORKFLOW_FAILURE, new ErrorResponse(exception));
@@ -87,8 +83,8 @@ public class ClientControllerAdvice extends BaseController {
     @ExceptionHandler(PSQLException.class)
     public StandardResponse<Object> handlePSQLException(PSQLException exception) {
         
-        String errMsg = DB_PSQL_EXCEPTION_MSG + String.format(": [%s]", getThrowableCause(exception));
-        ErrorResponse errorResponse = new ErrorResponse(new BaseException(DB_PSQL_EXCEPTION, errMsg));
+        String errMsg = MSDB_PSQL_EXCEPTION_MSG + String.format(": [%s]", getThrowableCause(exception));
+        ErrorResponse errorResponse = new ErrorResponse(new BaseException(MSDB_PSQL_EXCEPTION, errMsg));
 
         return createFailureResponse(START_WORKFLOW_FAILURE, errorResponse);
     }
@@ -104,7 +100,7 @@ public class ClientControllerAdvice extends BaseController {
             ThirdPartyAppCallErrorException.class,
             ThirdPartyAppNullResponseException.class
     })
-    public StandardResponse<Object> handleThirdPartyAppException(BaseException exception) {
+    public StandardResponse<Object> handleThirdPartyAppException(GenericException exception) {
         return createFailureResponse(START_WORKFLOW_FAILURE, new ErrorResponse(exception));
     }
 
@@ -129,6 +125,7 @@ public class ClientControllerAdvice extends BaseController {
             InvalidKeyException.class
     })
     public StandardResponse<Object> handleCheckedException(Exception exception) {
+
         String errMsg = String.format("[ %s ]", exception.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(new BaseException(UNKNOWN_ERROR, errMsg));
 

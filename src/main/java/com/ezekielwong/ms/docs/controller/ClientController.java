@@ -2,7 +2,7 @@ package com.ezekielwong.ms.docs.controller;
 
 import com.ezekielwong.ms.docs.domain.request.client.ClientWorkflowRequest;
 import com.ezekielwong.ms.docs.domain.response.ms.StandardResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.send.WorkflowResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.WorkflowResponse;
 import com.ezekielwong.ms.docs.service.ClientService;
 import com.ezekielwong.ms.docs.service.WebClientService;
 import com.ezekielwong.ms.docs.utils.DateTimeUtils;
@@ -24,7 +24,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import static com.ezekielwong.ms.docs.constant.Constants.*;
+import static com.ezekielwong.ms.docs.constant.AppConstants.*;
 
 /**
  * Controller for client requests

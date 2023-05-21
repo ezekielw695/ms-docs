@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ezekielwong.ms.docs.constant.ExceptionEnum.DB_TEMPLATE_NAME_MISMATCH;
+import static com.ezekielwong.ms.docs.constant.ExceptionEnum.MSDB_TEMPLATE_NAME_MISMATCH;
 import static com.ezekielwong.ms.docs.constant.ExceptionEnum.REQUEST_VALIDATION_ERROR;
-import static com.ezekielwong.ms.docs.constant.ExceptionMessages.DB_TEMPLATE_NAME_MISMATCH_MSG;
+import static com.ezekielwong.ms.docs.constant.ExceptionMessages.MSDB_TEMPLATE_NAME_MISMATCH_MSG;
 
 /**
  * Service for client requests
@@ -44,6 +44,12 @@ public class ClientServiceImpl implements ClientService {
     @Value("#{'${filenet.doc-prop.prop-name-list}'.split(',')}")
     private List<String> propNameList;
 
+    /**
+     * Extract the document properties required by filenet
+     *
+     * @param fieldDataList List of workflow data
+     * @return Map of the document properties required by filenet
+     */
     @Override
     public Map<String, String> extractDocProps(List<FieldData> fieldDataList) {
 
@@ -51,8 +57,7 @@ public class ClientServiceImpl implements ClientService {
         Map<String, String> fieldDataMap;
 
         try {
-            fieldDataMap = fieldDataList.stream()
-                    .collect(Collectors.toMap(FieldData::getFieldId, FieldData::getValue));
+            fieldDataMap = fieldDataList.stream().collect(Collectors.toMap(FieldData::getFieldId, FieldData::getValue));
 
         } catch (IllegalStateException e) {
 
@@ -95,6 +100,7 @@ public class ClientServiceImpl implements ClientService {
      * Save/update client workflow request
      *
      * @param clientRequest {@link ClientWorkflowRequest}
+     * @param docPropsMap Map of the document properties required by filenet
      * @return {@link Docs} containing the saved/updated data
      */
     @Override
@@ -108,6 +114,7 @@ public class ClientServiceImpl implements ClientService {
 
         // New request
         if (docsDB.isEmpty()) {
+
             log.debug("New request");
             docs = new Docs();
 
@@ -117,17 +124,18 @@ public class ClientServiceImpl implements ClientService {
 
         // Update request
         } else {
+
             log.debug("Update request");
             docs = docsDB.get();
 
             // Check for template name mismatch
             if (!StringUtils.equals(clientRequest.getName(), docs.getTemplateName())) {
 
-                log.error(DB_TEMPLATE_NAME_MISMATCH_MSG);
-                String errMsg = DB_TEMPLATE_NAME_MISMATCH_MSG + String.format(": [ Request: \"%s\", DB: \"%s\" ]",
+                log.error(MSDB_TEMPLATE_NAME_MISMATCH_MSG);
+                String errMsg = MSDB_TEMPLATE_NAME_MISMATCH_MSG + String.format(": [ Request: \"%s\", DB: \"%s\" ]",
                         clientRequest.getName(), docs.getTemplateName());
 
-                throw new GenericSuccessException(DB_TEMPLATE_NAME_MISMATCH, errMsg);
+                throw new GenericSuccessException(MSDB_TEMPLATE_NAME_MISMATCH, errMsg);
             }
 
             docs.setUpdatedBy(clientRequest.getUpdatedChannel());
@@ -155,6 +163,7 @@ public class ClientServiceImpl implements ClientService {
         log.debug("Updating client request status");
         Docs docsDB = docsRepository.findByCaseId(caseId);
         docsDB.setStatus(status);
+        docsDB.setUpdatedBy("SYSTEM");
 
         return docsRepository.saveAndFlush(docsDB);
     }

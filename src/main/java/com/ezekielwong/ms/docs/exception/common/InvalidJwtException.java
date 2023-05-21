@@ -1,7 +1,6 @@
-package com.ezekielwong.ms.docs.exception.ms;
+package com.ezekielwong.ms.docs.exception.common;
 
 import com.ezekielwong.ms.docs.error.ErrorCode;
-import com.ezekielwong.ms.docs.exception.common.BaseException;
 import lombok.NonNull;
 
 public class InvalidJwtException extends BaseException {
