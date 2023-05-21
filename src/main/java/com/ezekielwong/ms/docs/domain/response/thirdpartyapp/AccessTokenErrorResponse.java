@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AccessTokenErrorResponse {
 
-    @JsonProperty("error")
     private String error;
-
-    @JsonProperty("error_description")
     private String errorDesc;
 }

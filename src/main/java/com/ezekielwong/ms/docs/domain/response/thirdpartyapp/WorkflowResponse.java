@@ -18,24 +18,20 @@ public class WorkflowResponse {
     /**
      * Name of the workflow
      */
-    @JsonProperty("Name")
     private String name;
 
     /**
      * Date and time the workflow was started
      */
-    @JsonProperty("StartDate")
     private String startDate;
 
     /**
      * Status of the workflow
      */
-    @JsonProperty("Status")
     private String status;
 
     /**
      * Additional information associated with the workflow
      */
-    @JsonProperty("Info")
     private String info;
 }

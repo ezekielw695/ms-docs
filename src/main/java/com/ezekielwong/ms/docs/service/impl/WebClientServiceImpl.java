@@ -168,7 +168,7 @@ public class WebClientServiceImpl implements WebClientService {
             log.info(STATUS_UPDATED);
 
             AccessTokenErrorResponse tokenError = (AccessTokenErrorResponse) response;
-            String errMsg = INVALID_JWT_EXCEPTION_MSG + String.format(": [ error: \"%s\", error_desc: \"%s\" ]",
+            String errMsg = INVALID_JWT_EXCEPTION_MSG + String.format(": [ error: \"%s\", errorDesc: \"%s\" ]",
                     tokenError.getError(), tokenError.getErrorDesc());
 
             throw new InvalidJwtException(INVALID_JWT_EXCEPTION, errMsg);

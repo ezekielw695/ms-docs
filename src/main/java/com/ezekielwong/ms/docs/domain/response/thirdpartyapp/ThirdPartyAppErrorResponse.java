@@ -35,16 +35,9 @@ public class ThirdPartyAppErrorResponse {
     @AllArgsConstructor
     public static class Error {
 
-        @JsonProperty("HttpStatusCode")
         private Integer httpStatusCode;
-
-        @JsonProperty("ErrorCode")
         private Integer errorCode;
-
-        @JsonProperty("ErrorMessage")
         private String errorMessage;
-
-        @JsonProperty("ReferenceId")
         private String referenceId;
     }
 
@@ -54,13 +47,8 @@ public class ThirdPartyAppErrorResponse {
     @AllArgsConstructor
     public static class ValidationError {
 
-        @JsonProperty("ErrorCode")
         private Integer errorCode;
-
-        @JsonProperty("PropertyName")
         private String propertyName;
-
-        @JsonProperty("ErrorMessage")
         private String errorMessage;
     }
 }

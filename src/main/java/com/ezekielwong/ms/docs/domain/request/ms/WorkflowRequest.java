@@ -20,12 +20,10 @@ public class WorkflowRequest implements Serializable {
     /**
      * Name of the workflow
      */
-    @JsonProperty("Name")
     private String name;
 
     /**
      * XML data used when starting the workflow
      */
-    @JsonProperty("Params")
     private String params;
 }
