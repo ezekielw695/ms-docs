@@ -5,24 +5,27 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.5</version>
+		<version>3.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ezekielw</groupId>
+	<groupId>com.ezekielwong</groupId>
 	<artifactId>ms-docs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-docs</name>
 	<description>Document Microservice</description>
 	<properties>
 		<java.version>17</java.version>
+		<snakeyaml.version>2.0</snakeyaml.version>
 		<postgresql.version>42.6.0</postgresql.version>
-		<hibernate-types.version>2.21.1</hibernate-types.version>
+		<hypersistence-utils.version>3.3.2</hypersistence-utils.version>
 		<commons.codec.version>1.15</commons.codec.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<java-jwt.version>4.4.0</java-jwt.version>
 		<okhttp3.version>4.10.0</okhttp3.version>
 		<bcprov-jdk18on.version>1.73</bcprov-jdk18on.version>
 		<sun-xml-blind.version>4.0.2</sun-xml-blind.version>
+		<springfox-swagger.version>3.0.0</springfox-swagger.version>
+		<swagger-core-v3.version>2.2.10</swagger-core-v3.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,7 +54,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.yaml</groupId>
+					<artifactId>snakeyaml</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>${snakeyaml.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
@@ -70,9 +85,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.vladmihalcea</groupId>
-			<artifactId>hibernate-types-60</artifactId>
-			<version>${hibernate-types.version}</version>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-62</artifactId>
+			<version>${hypersistence-utils.version}</version>
 		</dependency>
 
 		<dependency>
@@ -98,12 +113,6 @@
 			<artifactId>mockwebserver</artifactId>
 			<version>${okhttp3.version}</version>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -122,6 +131,33 @@
 			<artifactId>jaxb-impl</artifactId>
 			<version>${sun-xml-blind.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-swagger.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>io.swagger</groupId>
+					<artifactId>swagger-annotations</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>io.swagger</groupId>
+					<artifactId>swagger-models</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-core</artifactId>
+			<version>${swagger-core-v3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-swagger.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
