@@ -6,7 +6,6 @@ import com.ezekielwong.ms.docs.domain.request.client.common.FieldData;
 import com.ezekielwong.ms.docs.domain.request.client.common.RequesterInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.w3c.dom.Document;
@@ -67,18 +66,15 @@ public class XmlUtils {
 
         // Field data elements
         log.debug("Creating field data elements");
-        for (FieldData fieldData : fieldDataList) {
 
-            // Ignore empty field values
-            if (StringUtils.isNotBlank(fieldData.getValue())) {
+        fieldDataList.stream().filter(fieldData -> StringUtils.isNotBlank(fieldData.getValue())).forEach(fieldData -> {
 
-                log.debug(fieldData.getFieldId() + " : " + fieldData.getValue());
+            log.debug(fieldData.getFieldId() + " : " + fieldData.getValue());
 
-                Element e = document.createElement(fieldData.getFieldId());
-                e.appendChild(document.createTextNode(fieldData.getValue()));
-                root.appendChild(e);
-            }
-        }
+            Element e = document.createElement(fieldData.getFieldId());
+            e.appendChild(document.createTextNode(fieldData.getValue()));
+            root.appendChild(e);
+        });
 
         // Requester info element
         log.debug("Creating requester info element");

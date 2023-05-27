@@ -4,9 +4,13 @@ import com.ezekielwong.ms.docs.controller.BaseController;
 import com.ezekielwong.ms.docs.controller.ClientController;
 import com.ezekielwong.ms.docs.domain.response.ms.StandardResponse;
 import com.ezekielwong.ms.docs.error.ErrorResponse;
+import com.ezekielwong.ms.docs.exception.InvalidJwtException;
 import com.ezekielwong.ms.docs.exception.ThirdPartyAppCallErrorException;
 import com.ezekielwong.ms.docs.exception.ThirdPartyAppNullResponseException;
-import com.ezekielwong.ms.docs.exception.common.*;
+import com.ezekielwong.ms.docs.exception.common.BaseException;
+import com.ezekielwong.ms.docs.exception.common.GenericBadException;
+import com.ezekielwong.ms.docs.exception.common.GenericException;
+import com.ezekielwong.ms.docs.exception.common.GenericSuccessException;
 import org.postgresql.util.PSQLException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -83,7 +87,7 @@ public class ClientControllerAdvice extends BaseController {
     @ExceptionHandler(PSQLException.class)
     public StandardResponse<Object> handlePSQLException(PSQLException exception) {
         
-        String errMsg = MSDB_PSQL_EXCEPTION_MSG + String.format(": [%s]", getThrowableCause(exception));
+        String errMsg = MSDB_PSQL_EXCEPTION_MSG + String.format(": [ %s ]", getThrowableCause(exception));
         ErrorResponse errorResponse = new ErrorResponse(new BaseException(MSDB_PSQL_EXCEPTION, errMsg));
 
         return createFailureResponse(START_WORKFLOW_FAILURE, errorResponse);
@@ -105,7 +109,7 @@ public class ClientControllerAdvice extends BaseController {
     }
 
     /**
-     * Client encountered checked exception from XmlUtil or JwtUtil
+     * Client encountered checked exception
      * <ul>
      *     <li>XmlUtil: ParserConfigurationException, IllegalAccessException, TransformerException</li>
      *     <li>JwtUtil: NoSuchAlgorithmException, IOException, InvalidKeyException</li>

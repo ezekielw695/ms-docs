@@ -3,12 +3,14 @@ package com.ezekielwong.ms.docs.filenet;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlType(propOrder = {"messageid", "hostname", "timestamp", "userid"})

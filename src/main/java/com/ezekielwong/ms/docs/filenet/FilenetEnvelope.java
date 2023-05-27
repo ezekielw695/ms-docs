@@ -3,12 +3,14 @@ package com.ezekielwong.ms.docs.filenet;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "Envelope", namespace = "http://schemas.xmlsoap.org/soap/envelope/")

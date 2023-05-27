@@ -10,10 +10,10 @@ import com.ezekielwong.ms.docs.exception.common.GenericBadException;
 import com.ezekielwong.ms.docs.filenet.response.FilenetResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ezekielwong.ms.docs.constant.AppConstants.*;
 import static com.ezekielwong.ms.docs.constant.ExceptionEnum.REQUEST_VALIDATION_ERROR;
@@ -87,17 +87,12 @@ public abstract class BaseController {
             // Check for additional validation error
             if (errorResponse.getValidationErrorList() != null) {
 
-                List<ProviderError> providerErrorList = new ArrayList<>();
-
-                for (ThirdPartyAppErrorResponse.ValidationError error : errorResponse.getValidationErrorList()) {
-
-                    log.error("Validation error: " + error.toString());
-                    ProviderError providerError = new ProviderError();
-                    providerError.setProviderErrorCode(error.getErrorCode().toString());
-                    providerError.setProviderErrorDetail(error.getErrorMessage());
-
-                    providerErrorList.add(providerError);
-                }
+                List<ProviderError> providerErrorList = errorResponse.getValidationErrorList().stream()
+                        .map(error -> ProviderError.builder()
+                                .providerErrorCode(error.getErrorCode().toString())
+                                .providerErrorDetail(error.getErrorMessage())
+                                .build())
+                        .collect(Collectors.toList());
 
                 errorDetail.setProviderErrorList(providerErrorList);
             }
@@ -106,6 +101,7 @@ public abstract class BaseController {
 
         // Unknown response
         } else {
+
             log.error(UNKNOWN_RESPONSE);
             return new ErrorResponse(new GenericBadException(UNKNOWN_ERROR, response.toString()));
         }
@@ -119,15 +115,16 @@ public abstract class BaseController {
 
             log.error("Request validation error");
             MethodArgumentNotValidException e = (MethodArgumentNotValidException) exception;
+
             List<String> exceptionMsgList = new ArrayList<>();
 
-            for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            e.getBindingResult().getFieldErrors().forEach(error -> {
 
                 String err = error.getField() + ": " + error.getDefaultMessage();
                 log.error(err);
 
                 exceptionMsgList.add(err);
-            }
+            });
 
             errMsg += String.format(": %s", exceptionMsgList);
 

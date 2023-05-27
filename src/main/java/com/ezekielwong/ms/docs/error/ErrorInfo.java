@@ -1,6 +1,7 @@
 package com.ezekielwong.ms.docs.error;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ public class ErrorInfo {
     private List<ErrorDetail> errorDetailList;
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ErrorDetail {

@@ -45,10 +45,10 @@ public class ClientServiceImpl implements ClientService {
     private List<String> propNameList;
 
     /**
-     * Extract the document properties required by filenet
+     * Extract the document properties required by Filenet
      *
      * @param fieldDataList List of workflow data
-     * @return Map of the document properties required by filenet
+     * @return Map of the document properties required by Filenet
      */
     @Override
     public Map<String, String> extractDocProps(List<FieldData> fieldDataList) {
@@ -69,14 +69,14 @@ public class ClientServiceImpl implements ClientService {
 
         Map<String, String> docPropsMap = new LinkedHashMap<>(2);
 
-        for (String propName : propNameList) {
+        propNameList.forEach(propName -> {
 
             String mappingValue = mapping.get(propName);
             String propValue = fieldDataMap.get(mappingValue);
 
             log.debug("PropName: [ {} ] -> PropValue: [ {} ]", propName, propValue);
             docPropsMap.put(propName, propValue);
-        }
+        });
 
         return docPropsMap;
     }

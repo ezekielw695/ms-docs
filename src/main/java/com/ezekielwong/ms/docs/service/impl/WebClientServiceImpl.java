@@ -2,11 +2,11 @@ package com.ezekielwong.ms.docs.service.impl;
 
 import com.ezekielwong.ms.docs.domain.request.ms.WorkflowRequest;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.AccessTokenErrorResponse;
+import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.AccessTokenResponse;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.ThirdPartyAppErrorResponse;
 import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.WorkflowResponse;
-import com.ezekielwong.ms.docs.domain.response.thirdpartyapp.AccessTokenResponse;
+import com.ezekielwong.ms.docs.exception.InvalidJwtException;
 import com.ezekielwong.ms.docs.exception.ThirdPartyAppCallErrorException;
-import com.ezekielwong.ms.docs.exception.common.InvalidJwtException;
 import com.ezekielwong.ms.docs.exception.ThirdPartyAppNullResponseException;
 import com.ezekielwong.ms.docs.service.WebClientService;
 import com.ezekielwong.ms.docs.utils.JwtUtils;
@@ -67,7 +67,7 @@ public class WebClientServiceImpl implements WebClientService {
     private String savedAccessToken;
 
     /**
-     * Send client workflow request to third party app
+     * Send Client workflow request to third party app
      *
      * @param caseId Unique client workflow request case identifier
      * @param name Name of the workflow
