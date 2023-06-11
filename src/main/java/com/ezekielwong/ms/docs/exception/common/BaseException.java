@@ -17,6 +17,11 @@ public class BaseException extends RuntimeException {
 
     private ErrorInfo errorInfo;
 
+    public BaseException (@NonNull ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.errorInfo = null;
+    }
+
     public BaseException (@NonNull ErrorCode errorCode, String message) {
         super((message == null ? errorCode.getDescription() : message), null);
         this.errorCode = errorCode;

@@ -18,12 +18,12 @@ public class FilenetRequest {
 
     private String documentclass;
     private String objectstore;
-    private docprops docprops;
+    private Docprops docprops;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class docprops implements Serializable {
+    public static class Docprops implements Serializable {
 
         private List<DocProp> docPropList;
     }

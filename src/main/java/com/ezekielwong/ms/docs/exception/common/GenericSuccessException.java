@@ -9,6 +9,10 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class GenericSuccessException extends BaseException {
 
+    public GenericSuccessException(@NonNull ErrorCode errorCode) {
+        super(errorCode);
+    }
+
     public GenericSuccessException(@NonNull ErrorCode errorCode, String message) {
         super(errorCode, message);
     }

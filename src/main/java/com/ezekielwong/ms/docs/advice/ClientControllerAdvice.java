@@ -109,7 +109,7 @@ public class ClientControllerAdvice extends BaseController {
     }
 
     /**
-     * Client encountered checked exception
+     * Client encounters checked exception
      * <ul>
      *     <li>XmlUtil: ParserConfigurationException, IllegalAccessException, TransformerException</li>
      *     <li>JwtUtil: NoSuchAlgorithmException, IOException, InvalidKeyException</li>
