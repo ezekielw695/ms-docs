@@ -26,6 +26,9 @@
 		<sun-xml-blind.version>4.0.2</sun-xml-blind.version>
 		<springfox-swagger.version>3.0.0</springfox-swagger.version>
 		<swagger-core-v3.version>2.2.10</swagger-core-v3.version>
+		<spring-kafka.version>3.0.7</spring-kafka.version>
+		<kafka.version>3.4.1</kafka.version>
+		<okhttp.version>4.11.0</okhttp.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -156,6 +159,23 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${springfox-swagger.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>${spring-kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp3.version}</version>
 		</dependency>
 
 	</dependencies>
